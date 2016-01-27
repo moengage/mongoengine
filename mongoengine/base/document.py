@@ -93,7 +93,10 @@ class BaseDocument(object):
         if self._dynamic:
             self._dynamic_lock = False
             for key, value in dynamic_data.iteritems():
-                setattr(self, key, value)
+                try:
+                    setattr(self, key, value)
+                except UnicodeEncodeError,e:
+                    setattr(self, key.encode("utf-8"), value)
 
         # Flag initialised
         self._initialised = True
